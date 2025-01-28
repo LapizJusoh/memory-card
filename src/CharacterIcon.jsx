@@ -1,7 +1,10 @@
-export default function CharacterCard( {characterName} ) {
+export default function CharacterCard( {characterId} ) {
+
+  const imageSrc = `https://genshin.jmp.blue/characters/${characterId.toLowerCase()}/icon`; 
   return (
     <div>
-      <p>{characterName}</p>
+      <img src={imageSrc} alt={`${characterId}'s image`} />
+      <p>{characterId}</p>
     </div>
   )
 }

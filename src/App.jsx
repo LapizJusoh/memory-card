@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import InitialData from './InitialData.jsx';
 import CharacterCard from './CharacterIcon.jsx';
-import './App.css'
+import './App.css';
 
 function App() {
 
@@ -23,13 +23,13 @@ function App() {
 
   return (
     <div>
-      <ol>
+      <ul>
         {(charaDetailsArr !== null) ?
           memoryGameArr.map((card) => {
-          return <li key={card.name}> <CharacterCard characterName={card.name} /></li>
+          return <li key={card.name}> <CharacterCard characterId={card.id} /></li>
         })
         : '' }
-      </ol>
+      </ul>
     </div>
   )
 }
