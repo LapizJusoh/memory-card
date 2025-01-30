@@ -5,30 +5,45 @@ import './App.css';
 
 function App() {
 
-  let [charaDetailsArr, setCharaDetailsArr] = useState(null);
+  let [charaArr, setCharaArr] = useState([]);
+  InitialData().then(r => setCharaArr(r));
 
   useEffect(() => {
-    InitialData().then(r => setCharaDetailsArr(r));
-
     return () => {}
-  }, [])
+  }, [charaArr])
 
-  let memoryGameArr = [];
+  function shuffle() {
+    let shuffledArr = charaArr;
 
-  if (charaDetailsArr !== null) {
-    for(let i = 0; i < 10; i++) {
-      memoryGameArr.push(charaDetailsArr[i]);
+    console.log(charaArr);
+    for(let currentIndex = charaArr.length-1; currentIndex > 0; currentIndex--) {
+      let randomIndex = Math.floor(Math.random()*currentIndex);
+
+      [shuffledArr[currentIndex], shuffledArr[randomIndex]]
+      = [shuffledArr[randomIndex], shuffledArr[currentIndex]];
+      currentIndex--;
     }
+
+    setCharaArr(shuffledArr);
+    console.log(charaArr);
   }
 
   return (
     <div>
+      <div>
+        <p>Genshin</p>
+      </div>
       <ul>
-        {(charaDetailsArr !== null) ?
-          memoryGameArr.map((card) => {
-          return <li key={card.name}> <CharacterCard characterId={card.id} /></li>
-        })
-        : '' }
+        {
+          charaArr.map((card) => {
+          return <li key={card}>
+            <CharacterCard
+              characterId={card}
+              parentFunction={shuffle}
+            />
+          </li>
+          })
+        }
       </ul>
     </div>
   )
