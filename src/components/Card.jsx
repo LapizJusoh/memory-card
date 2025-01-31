@@ -4,28 +4,25 @@ export default function Cards() {
 
   const [initialRender, setInitialRender] = useState(true);
   const [cardsArr, setCardsArr] = useState([]);
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
   const url = `https://genshin.jmp.blue/characters/`;
 
   useEffect(() => {
-    if (initialRender) {
+
+    if(initialRender) {
       fetch(url)
       .then(response => response.json())
       .then((data) => {
         let tempArr = [];
         for (let i=0;i<10;i++) {
-          tempArr.push(data[i]);
+          tempArr.push( { character: data[i], isClicked: false} );
         };
-        return shuffle(tempArr);
-      }).then((result) => setCardsArr(result))
-      .catch(err => console.log(err));
+        setCardsArr([...shuffle(tempArr)])
+      }).catch(err => console.log(err));
 
       setInitialRender(false);
     }
-
-    console.log(`render`);
-
-
-
     return () => {};
 
   },[]);
@@ -44,19 +41,35 @@ export default function Cards() {
     return array;
   }
 
-  function handleShuffle() {
-    setCardsArr(shuffle(cardsArr));
-    displayCard();
-  }
+  function handleClick(index) {
+    let tempArr = cardsArr;
 
-  function displayCard() {
-    return cardsArr.map((card) => <li key={card} onClick={handleShuffle}><img src={`${url + card}/icon`} /><p>{card}</p></li>)
+    if (!tempArr[index].isClicked) {
+      tempArr[index].isClicked = true;
+      setScore(() => score + 1);
+    } else {
+      for(let i=0;i<tempArr.length;i++) tempArr[i].isClicked=false;
+      setScore(0);
+    };
+    
+    tempArr = [...shuffle(cardsArr)];
+    setCardsArr([...tempArr]);
+    console.log(cardsArr);
+    // console.log(cardsArr);
   }
 
   return (
     <div>
+      <p>Score: {score}</p>
       <ul>
-        {displayCard()}
+        {cardsArr.map((card, index) => {
+          return<li
+              key={card.character}
+              onClick={() => handleClick(index)}><img src={`${url + card.character}/icon`}
+            />
+            <p>{card.character}</p>
+          </li>
+        })}
       </ul>
     </div>
   )
