@@ -1,4 +1,4 @@
-async function InitialData() {
+function InitialData() {
   const url = `https://genshin.jmp.blue/characters/`;
 
   const getDataPromise = fetch(url)
@@ -13,26 +13,6 @@ async function InitialData() {
 
   return getDataPromise;
 
-  /*
-  const charArr = [];
-  let resolveAllPromise;
-
-  const responses = await Promise.all(
-    characters.map((chara) => {
-      return fetch(url + chara);
-    })
-  );
-
-  resolveAllPromise = Promise.all(
-    responses.map(async(r) => {
-      charArr.push(await r.json());
-    })
-  ).catch(err => console.log(err));
-
-  return resolveAllPromise.then(() => {
-    return charArr;
-  });
-  */
 }
 
 export default InitialData;
