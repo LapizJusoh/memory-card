@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './Card.css';
 
 export default function Cards() {
 
@@ -25,7 +26,7 @@ export default function Cards() {
     }
     return () => {};
 
-  },[]);
+  },[]);  
 
   function shuffle(array) {
     let currentIndex = array.length;
@@ -47,6 +48,7 @@ export default function Cards() {
     if (!tempArr[index].isClicked) {
       tempArr[index].isClicked = true;
       setScore(() => score + 1);
+      (bestScore< (score+1) ) && setBestScore(() => bestScore + 1);
     } else {
       for(let i=0;i<tempArr.length;i++) tempArr[i].isClicked=false;
       setScore(0);
@@ -54,13 +56,16 @@ export default function Cards() {
     
     tempArr = [...shuffle(cardsArr)];
     setCardsArr([...tempArr]);
-    console.log(cardsArr);
     // console.log(cardsArr);
   }
 
   return (
     <div>
-      <p>Score: {score}</p>
+      <div className='display'>
+        <h4>Get points by clicking on an image but don&apos;t click on any more than once!</h4>
+        <p>Score:{score}</p>
+        <p>Best Score:{bestScore}</p>
+      </div>
       <ul>
         {cardsArr.map((card, index) => {
           return<li
